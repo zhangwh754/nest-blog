@@ -1,5 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import ThemeToggleButton from '@/components/ThemeToggleButton'
+import Image from 'next/image'
+import { Inter } from 'next/font/google'
+import Link from 'next/link'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -9,8 +15,38 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN">
-      <body className="antialiased text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 transition-colors">
-        {children}
+      <body
+        className={`antialiased text-slate-900 dark:text-slate-50 bg-white dark:bg-slate-950 transition-colors ${inter.className}`}
+      >
+        <div className="max-w-5xl mx-auto py-10 px-4 ">
+          <header>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
+                <div className="mr-3">
+                  <Image className="rounded-full" src="/avatar.jpg" width={48} height={48} alt="头像"></Image>
+                </div>
+                <div className="hidden h-6 text-2xl font-semibold sm:block">zwh</div>
+              </div>
+              <nav className="ml-auto text-base font-medium leading-5">
+                <Link className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4" href="/">
+                  Blog
+                </Link>
+                <Link className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4" href="/tag">
+                  Tags
+                </Link>
+                <Link className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4" href="/chat">
+                  Chat
+                </Link>
+                <Link className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4" href="/about">
+                  About
+                </Link>
+              </nav>
+              <ThemeToggleButton />
+            </div>
+          </header>
+        </div>
+
+        {/* {children} */}
       </body>
     </html>
   )
