@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import MenuToggleButton from './components/MenuToggleButton'
 import ThemeToggleButton from './components/ThemeToggleButton'
+import { headerNavLinks } from '../data/headerNavLinks'
 
 export default function Header() {
   const [display, setDisplay] = useState(false)
@@ -31,18 +32,11 @@ export default function Header() {
           </div>
 
           <nav className="hidden ml-auto text-base font-medium sm:block">
-            <Link className="p-1 text-gray-900 dark:text-gray-100 sm:p-4" href="/">
-              Blog
-            </Link>
-            <Link className="p-1 text-gray-900 dark:text-gray-100 sm:p-4" href="/tag">
-              Tags
-            </Link>
-            <Link className="p-1 text-gray-900 dark:text-gray-100 sm:p-4" href="/chat">
-              Chat
-            </Link>
-            <Link className="p-1 text-gray-900 dark:text-gray-100 sm:p-4" href="/about">
-              About
-            </Link>
+            {headerNavLinks.map(link => (
+              <Link key={link.href} className="p-1 text-gray-900 dark:text-gray-100 sm:p-4" href={link.href}>
+                {link.title}
+              </Link>
+            ))}
           </nav>
 
           {display && (
@@ -51,18 +45,16 @@ export default function Header() {
                 <MenuToggleButton display={false} toggleMenuShow={() => toggleMenuShow(false)} />
               </div>
               <nav className="flex flex-col items-start px-8 text-2xl font-bold">
-                <Link className="p-4 text-gray-900 dark:text-gray-100" href="/">
-                  Blog
-                </Link>
-                <Link className="p-4 text-gray-900 dark:text-gray-100" href="/tag">
-                  Tags
-                </Link>
-                <Link className="p-4 text-gray-900 dark:text-gray-100" href="/chat">
-                  Chat
-                </Link>
-                <Link className="p-4 text-gray-900 dark:text-gray-100" href="/about">
-                  About
-                </Link>
+                {headerNavLinks.map(link => (
+                  <Link
+                    key={link.href}
+                    className="p-4 text-gray-900 dark:text-gray-100"
+                    href={link.href}
+                    onClick={() => toggleMenuShow(false)}
+                  >
+                    {link.title}
+                  </Link>
+                ))}
               </nav>
             </div>
           )}
