@@ -14,7 +14,7 @@ export default function MenuToggleButton(props: IProps) {
 
   return (
     <button
-      className={`sm:hidden ml-1 sm:ml-4 p-1 rounded-md w-10 h-10 flex justify-center ${!props.display && 'mt-1'}`}
+      className={`sm:hidden ml-1 sm:ml-4 p-1 rounded-md w-8 h-8 flex justify-center ${!props.display && 'mt-2'}`}
       onClick={() => toggleMenuShow()}
     >
       <span className="sr-only">Toggle Menu Show</span>

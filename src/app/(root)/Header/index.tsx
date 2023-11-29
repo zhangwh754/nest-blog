@@ -15,7 +15,7 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <div className="flex items-center justify-between">
             <div className="mr-3">
-              <Image className="rounded-full" src="/avatar.jpg" width={48} height={48} alt="头像"></Image>
+              <Image priority className="rounded-full" src="/avatar.jpg" width={48} height={48} alt="头像"></Image>
             </div>
             <div className="hidden h-6 text-2xl font-semibold sm:block">zwh</div>
           </div>

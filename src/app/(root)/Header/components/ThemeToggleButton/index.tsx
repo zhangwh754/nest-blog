@@ -37,7 +37,7 @@ export default function ThemeToggleButton() {
   }
 
   return (
-    <button className="ml-auto sm:ml-1 p-1 rounded-md w-10 h-10 flex justify-center" onClick={() => toggleTheme()}>
+    <button className="ml-auto sm:ml-1 p-1 rounded-md w-8 h-8 flex justify-center" onClick={() => toggleTheme()}>
       <span className="sr-only">Toggle mode</span>
       {theme !== 'dark' ? (
         <svg
