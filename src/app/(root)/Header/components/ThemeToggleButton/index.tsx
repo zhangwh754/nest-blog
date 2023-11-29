@@ -10,9 +10,9 @@ export default function ThemeToggleButton() {
       localStorage.theme === 'dark' ||
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
     ) {
-      removeDark()
+      setTheme('dark')
     } else {
-      setDark()
+      setTheme('light')
     }
   }, [])
 
