@@ -4,9 +4,8 @@ import matter from 'gray-matter'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { serialize } from 'next-mdx-remote/serialize'
 import { postFilePaths, POSTS_PATH } from '@/utils/mdxUtils'
-import { Suspense } from 'react'
 
-export const components = {
+const components = {
   h2: (props: any) => (
     <h2 {...props} className="text-red-500">
       {props.children}
@@ -50,7 +49,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 /**
  * @description: 获取mdx的meta信息
  */
-export async function getMdxData(filePath: string) {
+async function getMdxData(filePath: string) {
   const fullPath = path.join(POSTS_PATH, `${filePath}.mdx`)
   const fileStats = fs.statSync(fullPath)
   const modificationTime = new Date(fileStats.mtime).getTime() // 修改时间
