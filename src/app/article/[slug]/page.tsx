@@ -4,6 +4,7 @@ import matter from 'gray-matter'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { serialize } from 'next-mdx-remote/serialize'
 import { postFilePaths, POSTS_PATH } from '@/utils/mdxUtils'
+import CodeBlock from '@/components/CodeBlock'
 
 const components = {
   h2: (props: any) => (
@@ -11,21 +12,11 @@ const components = {
       {props.children}
     </h2>
   ),
-  pre: (props: any) => (
-    <div className="relative bg-[#292b30] rounded-md [&>button]:invisible [&>button]:hover:visible">
-      <button className="absolute right-4 top-4">
-        <svg className="inline-block text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path
-            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </button>
-      <pre {...props} className="py-5 px-6 text-sm leading-5">
-        {props.children}
-      </pre>
-    </div>
-  ),
+  pre: (props: any) => {
+    const codeblock = (props.children.props.children as string).trim()
+
+    return <CodeBlock codeBlock={codeblock} />
+  },
   p: (props: any) => (
     <p {...props} className="my-4 leading-7">
       {props.children}
@@ -40,7 +31,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      {/* @ts-expect-error Async Server Component */}
       <MDXRemote source={source} components={components} />
     </>
   )
@@ -49,8 +39,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
 /**
  * @description: 获取mdx的meta信息
  */
-async function getMdxData(filePath: string) {
-  const fullPath = path.join(POSTS_PATH, `${filePath}.mdx`)
+async function getMdxData(filename: string) {
+  const decodeFilename = decodeURIComponent(filename)
+
+  const fullPath = path.join(POSTS_PATH, `${decodeFilename}.mdx`)
   const fileStats = fs.statSync(fullPath)
   const modificationTime = new Date(fileStats.mtime).getTime() // 修改时间
 
