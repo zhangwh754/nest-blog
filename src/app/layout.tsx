@@ -21,6 +21,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <main>{children}</main>
         </div>
+
+        <script src="/iconfont.js" async></script>
       </body>
     </html>
   )
