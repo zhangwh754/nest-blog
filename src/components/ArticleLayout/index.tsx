@@ -27,8 +27,7 @@ interface IIconProps {
  * @param {IProps} props
  */
 export default async function ArticleLayout(props: IProps) {
-  // console.log('getMdxData', getMdxData())
-  const list = getMdxData()
+  const list = getMdxMetaData()
 
   return (
     <>
@@ -47,33 +46,31 @@ export default async function ArticleLayout(props: IProps) {
  */
 export const ArticleItem = (item: IArticleItem) => {
   return (
-    <>
-      <li key={item.filePath} className="mt-0 mb-8 pt-4">
-        {/* <Link href={`/article/${item.filePath}`}>
+    <li key={item.filePath} className="mt-0 mb-8 pt-4">
+      {/* <Link href={`/article/${item.filePath}`}>
           <h3 className="mb-3 text-blue-500 dark:text-blue-300 no-underline hover:underline">{item.data.title}</h3>
         </Link> */}
-        <Link as={`/article/${item.filePath.replace(/\.mdx?$/, '')}`} href={`/article/[slug]`}>
-          <h3 className="mb-3 text-blue-500 dark:text-blue-300 no-underline hover:underline">{item.data.title}</h3>
-        </Link>
-        <div className="flex items-center justify-start flex-wrap mb-2">
-          <div className="flex items-center content-start mr-4">
-            <Icon type="type" className="w-4 h-4 m-1" />
-            <span>前端</span>
-            {['工具'].map(category => (
-              <>
-                <span> / </span>
-                <span>{category}</span>
-              </>
-            ))}
-          </div>
-          <div className="flex items-center content-start mr-4">
-            <Icon type="date" className="w-4 h-4 m-1" />
-            <time dateTime={`${item.modificationTime}`}>{dayjs(item.modificationTime).format('YYYY-MM-DD HH:mm')}</time>
-          </div>
+      <Link as={`/article/${item.filePath.replace(/\.mdx?$/, '')}`} href={`/article/[slug]`}>
+        <h3 className="mb-3 text-blue-500 dark:text-blue-300 no-underline hover:underline">{item.data.title}</h3>
+      </Link>
+      <div className="flex items-center justify-start flex-wrap mb-2">
+        <div className="flex items-center content-start mr-4">
+          <Icon type="type" className="w-4 h-4 m-1" />
+          <span>前端</span>
+          {['工具'].map(category => (
+            <div key={`category-${category}`}>
+              <span> / </span>
+              <span>{category}</span>
+            </div>
+          ))}
         </div>
-        {item.data.description && <p className="line-clamp-3">{item.data.description}</p>}
-      </li>
-    </>
+        <div className="flex items-center content-start mr-4">
+          <Icon type="date" className="w-4 h-4 m-1" />
+          <time dateTime={`${item.modificationTime}`}>{dayjs(item.modificationTime).format('YYYY-MM-DD HH:mm')}</time>
+        </div>
+      </div>
+      {item.data.description && <p className="line-clamp-3">{item.data.description}</p>}
+    </li>
   )
 }
 
@@ -112,7 +109,7 @@ export const Icon = (props: IIconProps) => {
 /**
  * @description: 获取mdx的meta信息
  */
-export function getMdxData() {
+export function getMdxMetaData() {
   const posts = postFilePaths.map(filePath => {
     const fullPath = path.join(POSTS_PATH, filePath)
     const fileStats = fs.statSync(fullPath)

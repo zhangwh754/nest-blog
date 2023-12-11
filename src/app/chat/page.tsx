@@ -1,4 +1,4 @@
-import ArticleLayout from '@/components/ArticleLayout/page'
+import ArticleLayout from '@/components/ArticleLayout'
 
 export default function Chat() {
   return (
