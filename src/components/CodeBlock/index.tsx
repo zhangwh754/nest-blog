@@ -35,7 +35,7 @@ export default function CodeBlock(props: IProps) {
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line })}>
                 <>
-                  <span className="inline-block mr-4 w-8 text-center select-none">{i + 1}</span>
+                  <span className="inline-block mr-4 w-8 text-center text-gray-500 select-none">{i + 1}</span>
                   {line.map((token, key) => (
                     <span key={key} {...getTokenProps({ token })} />
                   ))}
