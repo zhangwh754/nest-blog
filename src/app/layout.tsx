@@ -16,10 +16,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={`antialiased text-slate-900 dark:text-slate-50 bg-white dark:bg-slate-950 transition-colors ${inter.className}`}
       >
-        <div className="max-w-5xl mx-auto py-10 px-4">
+        <div className="relative max-w-5xl mx-auto bg-inherit">
           <Header />
 
-          <main>{children}</main>
+          <main className="relative px-4 pt-32 pb-4 sm:pb-8">{children}</main>
         </div>
 
         <script src="/iconfont.js" async></script>

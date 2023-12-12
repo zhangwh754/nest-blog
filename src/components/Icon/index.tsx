@@ -1,5 +1,3 @@
-import '../../../public/iconfont.js'
-
 interface IProps {
   name: string
   className?: string

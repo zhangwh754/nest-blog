@@ -22,7 +22,7 @@ export default function Header() {
 
   return (
     <>
-      <header>
+      <header className="fixed left-0 right-0 max-w-5xl mx-auto py-10 px-4 bg-inherit z-[999999]">
         <div className="flex justify-between items-center">
           <div className="flex items-center justify-between">
             <div className="mr-3">
