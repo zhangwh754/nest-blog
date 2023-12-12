@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { POSTS_PATH } from '@/utils/mdxUtils'
 import CodeBlock from '@/components/CodeBlock'
 import Icon from '@/components/Icon'
+import ArticleAside from '@/components/ArticleAside'
 
 const components = {
   h2: (props: any) => {
@@ -15,7 +16,7 @@ const components = {
       <h2
         id={`${url}`}
         {...props}
-        className="mt-12 mb-4 pt-6 text-2xl tracking-tight border-t border-gray-200 dark:border-gray-800 transition-colors"
+        className="article-title mt-12 mb-4 pt-6 text-2xl tracking-tight border-t border-gray-200 dark:border-gray-800 transition-colors"
       >
         <a href={`#${url}`}>
           <span className="mr-4 text-green-600 dark:text-green-300">#</span>
@@ -31,7 +32,7 @@ const components = {
       <h3
         id={`${url}`}
         {...props}
-        className="mt-8 mb-2 pt-4 text-xl tracking-tight border-t border-gray-200 dark:border-gray-800 transition-colors"
+        className="article-title mt-8 mb-2 pt-4 text-xl tracking-tight border-t border-gray-200 dark:border-gray-800 transition-colors"
       >
         <a href={`#${url}`}>
           <span className="mr-4 text-green-600 dark:text-green-300">##</span>
@@ -137,25 +138,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <>
       <div className="relative flex">
-        <aside className="hidden sm:block fixed pr-8 w-[224px]">
-          <div className="pl-4 text-sm border border-transparent border-l-gray-200 dark:border-l-gray-800 transition-colors">
-            <p className="text-sm tracking-wide font-semibold">overview</p>
-            <nav>
-              <span className="sr-only">title overview of this article</span>
-
-              <ul>
-                {titles.map(title => (
-                  <li
-                    key={title.content}
-                    className={`${title.level === '###' && 'pl-4'} my-2 text-gray-600 dark:text-gray-500 break-words`}
-                  >
-                    <a href={`#${title.content}`}>{title.content}</a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-        </aside>
+        <ArticleAside titles={titles} />
         <article className="pl-0 sm:pl-[224px] w-auto overflow-hidden">
           <PageCategoryWrapper type="基础" />
           <PageMetaWrapper title={metaData.title} modificationTime={modificationTime} />
