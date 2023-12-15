@@ -142,6 +142,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <article className="pl-0 sm:pl-[224px] w-auto overflow-hidden">
           <PageCategoryWrapper type="基础" />
           <PageMetaWrapper title={metaData.title} modificationTime={modificationTime} />
+          {/* @ts-expect-error Async Server Component */}
           <MDXRemote source={source} components={components} />
         </article>
       </div>
