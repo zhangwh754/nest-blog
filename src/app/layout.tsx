@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/react'
 import './(root)/globals.css'
 import Header from './(root)/Header'
 
@@ -14,7 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="relative max-w-5xl mx-auto bg-inherit">
           <Header />
 
-          <main className="relative px-4 pt-32 pb-4 sm:pb-8">{children}</main>
+          <main className="relative px-4 pt-32 pb-4 sm:pb-8">
+            {children}
+            <Analytics />
+          </main>
         </div>
 
         <script src="/iconfont.js" async></script>
