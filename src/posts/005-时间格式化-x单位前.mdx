@@ -1,0 +1,56 @@
+---
+title: 时间格式转换为过去xx单位前
+description: 时间格式转换为过去xx单位前
+type: 代码片段
+---
+
+## 时间格式转换
+
+将过去的时间戳转换为 `刚刚`、`几秒前`、`几分钟前`、`几小时前`、`几天前`、几月前
+
+未来的时间转换为YYYY-MM-DD格式
+
+依赖dayjs库
+
+```js
+const dayjs = require('dayjs')
+
+function timeAgo(date, format = null) {
+  const now = dayjs()
+  const ago = dayjs(date)
+
+  if (now.isBefore(ago)) {
+    // If the difference is greater than a year, return formatted date
+    return ago.format('YYYY-MM-DD')
+  } else {
+    let diff = now.diff(ago, 'second')
+
+    if (format) {
+      return ago.format(format)
+    }
+
+    const units = [
+      [60, '秒'],
+      [60, '分钟'],
+      [24, '小时'],
+      [7, '天'],
+      [30.44, '个月'], // Approximation for month length
+      [12, '年'], // Approximation for year length
+    ]
+
+    for (const [interval, label] of units) {
+      if (diff < interval) {
+        return Math.round(diff) + label + '前'
+      }
+      diff /= interval // 转换单位
+    }
+  }
+}
+
+console.log(timeAgo(Date.now() - 1000 * 60 * 0.5)) // 30秒前
+console.log(timeAgo(Date.now() - 1000 * 60 * 1)) // 1分钟前
+console.log(timeAgo(Date.now() - 1000 * 60 * 25)) // 25分钟前
+console.log(timeAgo(Date.now() - 1000 * 60 * 3000)) // 2天前
+console.log(timeAgo(Date.now() - 1000 * 60 * 60000)) // 6个月前
+```
+

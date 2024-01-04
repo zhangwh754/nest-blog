@@ -1,0 +1,59 @@
+---
+title: 设计模式-单例模式
+description: 设计模式-单例模式
+type: 设计模式
+---
+
+## 设计模式-单例模式
+
+### 单例的用途
+
+1. 全局缓存
+2. 浏览器的window对象
+3. 登录按钮的登录浮窗
+4. 等只需要一个的对象，不需要重复创建
+
+### js中的单例模式
+
+js是一种无类的语言，单例模式无需再声明一个类
+
+### 单例的原则
+一个类只有一个实例，并且这个实例提供全局访问
+
+### 普通单例模式
+如浏览器环境下的全局变量等就是一种单例的应用
+foo变量可以在任意位置访问到，且不会被声明多次，但是会有污染全局作用域的问题。
+```js
+var foo = {}
+```
+
+### 普通函数单例模式
+
+
+```js
+function getSingle(fn, ...args) {
+  let instance = null
+
+  return function () {
+    return instance || (instance = fn.apply(this, args))
+  }
+}
+
+class P {
+  static create() {
+    return new P()
+  }
+}
+
+const createSinglePInstance = getSingle(P.create)
+
+const p1 = createSinglePInstance()
+const p2 = createSinglePInstance()
+
+const p3 = P.create()
+const p4 = P.create()
+
+console.log(p1 === p2)	// true
+console.log(p3 === p4)  // false
+```
+

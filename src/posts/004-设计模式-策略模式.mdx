@@ -1,0 +1,82 @@
+---
+title: 设计模式-策略模式
+description: 设计模式-策略模式
+type: 设计模式
+---
+
+## 策略模式
+
+利用策略模式实现的验证工具类
+
+```js
+const strategy = {
+  required: function (value) {
+    return value !== ''
+  },
+  phone: function (value) {
+    return /^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(value)
+  },
+  minLength: function (value, length) {
+    return value.length >= length
+  },
+  maxLength: function (value, length) {
+    return value.length < length
+  },
+}
+
+class Validator {
+  constructor(rules = []) {
+    this.rules = rules
+  }
+
+  add(rule) {
+    if (Array.isArray(rule)) this.rules.push(...rule)
+    else this.rules.push(rule)
+  }
+
+  async validate(values, callback) {
+    const validationPromises = this.rules.map(item => {
+      const [rule, ...params] = item.rule.split(':')
+      params.unshift(values[item.key])
+
+      const result = strategy[rule].apply(this, params)
+
+      return Promise.resolve(result ? null : item.msg)
+    })
+
+    const errors = await Promise.all(validationPromises)
+    const filteredErrors = errors.filter(error => error !== null)
+    if (filteredErrors.length > 0) {
+      return Promise.reject(filteredErrors)
+    }
+    if (typeof callback === 'function') callback()
+    else return Promise.resolve()
+  }
+}
+
+const validator = new Validator()
+
+const formData = {
+  username: '1231231123',
+  phone: '18888888888',
+  password: '123123',
+}
+
+validator.add([
+  { key: 'username', rule: 'required', msg: '用户名必填' },
+  { key: 'username', rule: 'maxLength:8', msg: '用户名最多8位' },
+])
+validator.add({ key: 'phone', rule: 'phone', msg: '手机号格式错误' })
+validator.add({ key: 'password', rule: 'minLength:6', msg: '密码最短6位' })
+
+validator
+  .validate(formData)
+  .then(() => {
+    console.log('验证通过')
+  })
+  .catch(err => {
+    console.log('验证不通过', err)
+  })
+
+```
+

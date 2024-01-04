@@ -1,0 +1,35 @@
+---
+title: computed-cache
+description: 计算结果缓存函数
+type: 代码片段
+---
+
+## 计算结果缓存函数
+
+```js
+const mult = () => {
+  const cache = {}
+
+  return async function (...args) {
+    const key = args.join(',')
+
+    if (cache[key]) {
+      return cache[key]
+    }
+
+    const result = args.reduce(async (pre, cur) => pre * cur, 1)
+
+    cache[key] = result
+
+    return result
+  }
+}
+
+const foo = mult()
+
+console.log(foo(1, 2, 3))
+console.log(foo(1, 2, 3))
+console.log(foo(1, 2, 3))
+console.log(foo(1, 2, 3))
+```
+

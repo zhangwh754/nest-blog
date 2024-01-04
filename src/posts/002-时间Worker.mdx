@@ -1,0 +1,157 @@
+---
+title: 定时器Worker
+description: 可开始暂停的定时器Worker.js
+type: 代码片段
+---
+
+## 时间Worker
+
+实现了如下的功能
+
+1. 开始计时
+2. 暂停计时
+3. 恢复计时
+
+
+
+## timer.worker.js
+
+```js
+/**
+ * @description: 存储倒计时信息
+ */
+class Count {
+  constructor(remainTime) {
+    // 定时器
+    this.timer = null
+
+    // 剩余时间
+    this.remainTime = remainTime
+
+    // 是否暂停
+    this.pauseFlag = false
+  }
+
+  setTimer(timer) {
+    this.timer = timer
+  }
+
+  setRemainTime(remainTime) {
+    this.remainTime = remainTime
+  }
+
+  setPauseFlag(flag) {
+    this.pauseFlag = flag
+  }
+
+  getTimer() {
+    return this.timer
+  }
+
+  getRemainTime() {
+    return this.remainTime
+  }
+
+  getPauseFlag() {
+    return this.pauseFlag
+  }
+}
+
+function countdown(count) {
+  if (count.getTimer()) return
+
+  if (count.getRemainTime() <= 0) {
+    return self.postMessage({ type: 'end' })
+  }
+
+  count.setTimer(
+    setTimeout(() => {
+      count.setTimer(null)
+
+      if (!count.getPauseFlag()) {
+        const newRemainTime = count.getRemainTime() - 1
+
+        count.setRemainTime(newRemainTime)
+
+        self.postMessage({ type: 'count', data: newRemainTime })
+
+        countdown(count)
+      }
+    }, 1000)
+  )
+}
+
+const count = new Count()
+
+self.addEventListener('message', function (e) {
+  const {
+    data: { type, data },
+  } = e
+
+  switch (type) {
+    case 'start':
+      count.setPauseFlag(false)
+      countdown(count)
+      break
+    case 'pause':
+      count.setPauseFlag(true)
+      count.setTimer(null)
+      break
+    case 'init':
+      count.setRemainTime(data)
+      countdown(count)
+      break
+    default:
+      throw new Error('Count Worker Type is one of start, pause, init.')
+  }
+})
+```
+
+## timer.js
+
+```js
+var worker = new Worker('timer.worker.js', { name: 'timer_worker' })
+
+/**
+ * @description: 计时器初始化
+ * @param {number} time
+ * @param {function} countdownCallback
+ * @param {function} endCallback
+ */
+export const init = (time, countdownCallback, endCallback) => {
+  worker.postMessage({ type: 'init', data: time })
+
+  if (!countdownCallback || typeof countdownCallback !== 'function') throw new Error('timer worker need a function')
+  if (!endCallback || typeof endCallback !== 'function') throw new Error('timer worker need a function')
+
+  worker.onmessage = function ({ data: { type, data } }) {
+    if (type === 'count') {
+      countdownCallback(data)
+    } else {
+      endCallback()
+    }
+  }
+}
+
+/**
+ * @description: 计时器继续计时
+ */
+export const start = () => {
+  worker.postMessage({ type: 'start' })
+}
+
+/**
+ * @description: 计时器暂停计时
+ */
+export const pause = () => {
+  worker.postMessage({ type: 'pause' })
+}
+
+export const endWorker = () => {
+  worker.terminate()
+}
+```
+
+## webpack中使用
+
+webpack中使用worker需要引入worker-loader，不能使用普通的导入方法。
