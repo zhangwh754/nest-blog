@@ -29,6 +29,8 @@ interface IIconProps {
 export default async function ArticleLayout(props: IProps) {
   const list = getMdxMetaData()
 
+  console.log('list ==============', list)
+
   return (
     <>
       {props.title && <h2 className="my-4 text-3xl">{props.title}</h2>}
@@ -57,9 +59,9 @@ export const ArticleItem = (item: IArticleItem) => {
         <div className="flex items-center content-start mr-4">
           <Icon type="type" className="w-4 h-4 m-1" />
           <span>前端</span>
-          {['工具'].map(category => (
+          {[item.data.type].map(category => (
             <div key={`category-${category}`}>
-              <span> / </span>
+              <span>/</span>
               <span>{category}</span>
             </div>
           ))}
